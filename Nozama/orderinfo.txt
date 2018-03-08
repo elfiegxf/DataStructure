@@ -1,0 +1,8 @@
+Order 0 arrived at time 1
+Fetch time 3 minutes, pack time 2 minutes
+Order 1 arrived at time 2
+Fetch time 2 minutes, pack time 1 minutes
+Order 2 arrived at time 3
+Fetch time 2 minutes, pack time 3 minutes
+Order 4 arrived at time 7
+Fetch time 1 minutes, pack time 1 minutes
