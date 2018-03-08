@@ -1,6 +1,6 @@
 
 ## Grep Search Engine
-- This program implements the simple version of grep on the Unix.
+- This program implements the simple version of grep command on the Unix.
 - Acknowledgements for the textbook: Data Structure and Algorithm Analysis in C++ by  Mark Allen Weiss. Also Google.
 - hashTable.h.(.cpp) implement the hash table. Indexfunction.h(.cpp) index all the words of the files in the directory using two ways, one is the case sensitive, another is the case insensitive. Searchfunctnion.h(.cpp) search the keyword in the directory. gerp.cpp makes the pieces a whole program.
 - Compile by option 1: clang++ -Wall -std=c++11 -Wextra; or by option 2: simply MAKE
