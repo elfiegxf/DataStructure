@@ -1,0 +1,80 @@
+//
+//  FSTreeTraversal.cpp
+//  gerp
+//
+//  Created by Xiaofei Guo on 4/13/17.
+//  Copyright © 2017 Xiaofei Guo. All rights reserved.
+//
+
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <queue>
+#include <cstdlib>
+#include <string.h>
+#include <sstream>
+#include <dirent.h>
+#include "FSTree.h"
+using namespace std;
+
+int main(int argc, char *argv[] )
+{
+    //declare helper function.
+    void traverseTree(int i, DirNode *given, queue<string> *filepaths);
+    
+    //pass parameter
+    char *directory = argv[1];
+    
+    DIR *dir;
+
+    // Check if directory is a directory.
+    if ((dir = opendir(directory)) != NULL)
+    {
+        FSTree fulldir(directory);
+        queue<string> *filepaths= NULL;
+        //traverse the tree;
+        DirNode * temp = fulldir.getRoot();
+        int numsub = temp -> numSubDirs();
+       	cout<<"debug:valid"<<endl;
+        traverseTree(numsub, temp, filepaths);
+
+    }
+    else
+      cerr<<"usage: gerp directory "<< endl<< "where directory is a valid directory"<<endl;
+
+}
+
+
+/*
+ *input i-th sub file in the given node.
+ *try to make it recursively
+ */
+void traverseTree(int i, DirNode *given, queue<string> *filePaths)
+{
+    //base case: get files.
+    if(given -> hasFiles())
+    {
+        int numfile = given -> numFiles();
+        string path = given -> getName();
+        for(int i=0; i< numfile; i++)
+        {
+            path = path + '/' + given -> getFile(i);
+            filePaths -> push(path);
+            cout << path <<endl;
+        }
+    }
+    
+    //recursive: subdir
+    if(given -> hasSubDir())
+    {
+        int numsub = given -> numSubDirs();
+        
+        while( numsub != 0)
+        {
+            given = given -> getSubDir(numsub);
+            traverseTree(numsub, given,filePaths);
+            numsub--;
+        }
+    }
+}

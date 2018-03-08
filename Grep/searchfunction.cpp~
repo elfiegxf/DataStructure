@@ -1,0 +1,97 @@
+//
+//  searchfunction.cpp
+//  gerp
+//
+//  Created by Xiaofei Guo on 4/18/17.
+//  Copyright © 2017 Xiaofei Guo. All rights reserved.
+//
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cstdlib>
+#include <string.h>
+#include <sstream>
+#include <vector>
+#include <algorithm>
+#include "hashTable.h"
+#include "indexfunction.h"
+#include "search.h"
+#include "stringProcessing.h"
+#include "searchfunction.h"
+
+using namespace std;
+/*sensitive seaching*/
+void searchfunction(std::string keyword, hashTable &myTable, std::vector<std::string> filepaths,std::vector<std::vector<std::string>> lines )
+{
+    const HashedObj result = myTable.get_data(keyword);
+    
+    if( result.filedata.size() != 0 )
+    {
+        int howManyLoc =(int) result.linedata.size();
+        string fileLocation;
+        
+
+        for (int i =0; i< howManyLoc; i++)
+        {
+            while( result.linedata[i] == result.linedata[i+1] && result.filedata[i] == result.filedata [i+1] )
+                i++;
+            int m=0,n=0;
+            m = result.filedata[i];
+            n = result.linedata[i];
+            
+            fileLocation = filepaths[m];
+            std::string line;
+            line = lines[m][n-1];// Check each line and print results.
+            
+            fileLocation = fileLocation+":"+ to_string(n) +": "+line;
+            cout << fileLocation<<endl;
+           
+            //prevent duplicated printing
+            if(i < howManyLoc-1)
+            {
+                if(result.linedata[i] == result.linedata[i+1] && result.filedata[i] == result.filedata [i+1]) i++;
+            }
+            
+        }
+    }
+    else  
+      cout<<"Not Found. Try with @insensitive or @i."<<endl;
+}
+
+/*insensitive search*/
+void insearchfunction(std::string keyword, hashTable &myTable, std::vector<std::string> filepaths, std::vector<std::vector<std::string>> lines)
+{
+    std::transform(keyword.begin(), keyword.end(), keyword.begin(), ::tolower);
+    const HashedObj result = myTable.get_data(keyword);
+    
+    if( result.filedata.size() != 0 )
+    {
+        // traverse each file and each line
+        int howManyLoc =(int) result.linedata.size();
+        string fileLocation;
+        
+        for (int i =0; i< howManyLoc; i++)
+        {
+            int m=0,n=0;
+            m = result.filedata[i];
+            n = result.linedata[i];
+            
+            fileLocation = filepaths[m];
+            std::string line;
+            line = lines[m][n-1];// Check each line and print results.
+            
+            fileLocation = fileLocation+":"+ to_string(n) +": "+line;
+            cout << fileLocation<<endl;
+            
+            //prevent duplicated printing
+            if(i < howManyLoc-1)
+            {
+                if(result.linedata[i] == result.linedata[i+1] && result.filedata[i] == result.filedata [i+1]) i++;
+            }
+            
+        }
+    }
+    else
+        cout<<"Not Found. "<<endl;
+}
